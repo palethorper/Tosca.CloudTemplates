@@ -31,7 +31,7 @@ resource "azurerm_mssql_database" "toscadb" {
   name                        = var.tosca_database_name
   server_id                   = azurerm_mssql_server.sql_server.id
   collation                   = "SQL_Latin1_General_CP1_CI_AS"
-  license_type                = "LicenseIncluded"
+  # license_type                = "LicenseIncluded"
   max_size_gb                 = var.sql_max_size
   min_capacity                = 0.5
   sku_name                    = "GP_S_Gen5_2"
@@ -47,7 +47,7 @@ resource "azurerm_mssql_database" "authdb" {
   name                        = var.auth_database_name
   server_id                   = azurerm_mssql_server.sql_server.id
   collation                   = "SQL_Latin1_General_CP1_CI_AS"
-  license_type                = "LicenseIncluded"
+  # license_type                = "LicenseIncluded"
   max_size_gb                 = var.sql_max_size
   min_capacity                = 0.5
   sku_name                    = "GP_S_Gen5_2"
