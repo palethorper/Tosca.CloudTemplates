@@ -34,7 +34,7 @@ resource "azurerm_mssql_database" "toscadb" {
   # license_type                = "LicenseIncluded"
   max_size_gb                 = var.sql_max_size
   min_capacity                = 0.5
-  sku_name                    = "GP_S_Gen5_2"
+  sku_name                    = var.sql_sku
   zone_redundant              = var.sql_zone_redundant
   auto_pause_delay_in_minutes = var.sql_auto_pause_delay
 
@@ -50,7 +50,7 @@ resource "azurerm_mssql_database" "authdb" {
   # license_type                = "LicenseIncluded"
   max_size_gb                 = var.sql_max_size
   min_capacity                = 0.5
-  sku_name                    = "GP_S_Gen5_2"
+  sku_name                    = var.sql_sku
   zone_redundant              = var.sql_zone_redundant
   auto_pause_delay_in_minutes = var.sql_auto_pause_delay
 
