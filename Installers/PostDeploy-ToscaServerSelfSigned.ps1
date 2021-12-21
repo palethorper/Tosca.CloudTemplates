@@ -19,12 +19,18 @@
 Import-Module WebAdministration
 $ServerName=$env:COMPUTERNAME
 
+
+$curHttpsBinding=(Get-WebBinding -Name "ToscaServer" -Protocol "https" -Port 443)
+if($null -eq $curHttpsBinding) {
+  New-WebBinding -Name 'ToscaServer' -Protocol "https" -Port 443
+}
+
 # Create Self-Signed Certificate and Bind to ToscaServer Site
-$tlscert=(Get-ChildItem Cert:\LocalMachine\My|Where-Object {$_.Subject -match "CN=$ServerName"}|Select-Object -First 1)
+$tlscert=(Get-ChildItem Cert:\LocalMachine\My|Where-Object {$_.Subject -match "CN=$ServerName" -and $_.EnhancedKeyUsageList -imatch 'Server Authentication' }|Select-Object -First 1)
 if ($null -eq $tlscert){
     $tlscert=New-SelfSignedCertificate -DnsName $ServerName -FriendlyName $env:COMPUTERNAME -CertStoreLocation Cert:\LocalMachine\My
-	(Get-WebBinding -Name "ToscaServer" -Protocol "https" -Port 443).AddSslCertificate($tlscert.GetCertHashString(),"my")
- }
+}
+(Get-WebBinding -Name "ToscaServer" -Protocol "https" -Port 443).AddSslCertificate($tlscert.GetCertHashString(),"my")
 
 # Cycle IIS and ToscaServer
 iisreset
