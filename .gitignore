@@ -6,3 +6,5 @@ templates-custom/*
 *.tfstate
 *.tfstate.*
 .terraform.lock*
+
+**/packer-manifest.json
