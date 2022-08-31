@@ -119,3 +119,9 @@ variable "image_gallery_name" {
   default     = ""
   description = "The name of a Shared Image Gallery for Tosca cloud deployment images."
 }
+
+variable "nsg_allow_list" {
+  type        = list(string)
+  default     = [""]
+  description = "List of allowed ip addresses for access"
+}

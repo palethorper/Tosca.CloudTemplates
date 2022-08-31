@@ -15,7 +15,8 @@ Write-Output "Disable defender real time monitoring"
 Set-MpPreference -DisableRealtimeMonitoring $true
 
 Write-Output "Set local execution policy"
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine  -ErrorAction Continue | Out-Null
+Get-ExecutionPolicy -List
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser -ErrorAction Continue -Force | Out-Null
 
 Write-Output "Enable long path behavior"
 # See https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file#maximum-path-length-limitation

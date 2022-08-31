@@ -24,6 +24,18 @@ resource "azurerm_network_security_group" "nsg_services" {
   location            = azurerm_resource_group.rg_services.location
   resource_group_name = azurerm_resource_group.rg_services.name
 
+  security_rule {
+    name                       = "AllowInDevTeam"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_address_prefixes    = var.nsg_allow_list
+    source_port_range          = "*"
+    destination_port_ranges    = ["3389", "1433"]
+    destination_address_prefix = "*"
+  }
+
   tags = {
     Environment = var.environment_name
   }
@@ -48,6 +60,18 @@ resource "azurerm_network_security_group" "nsg_clients" {
   name                = "${var.virtual_network_name}-clients-nsg"
   location            = azurerm_resource_group.rg_services.location
   resource_group_name = azurerm_resource_group.rg_services.name
+
+  security_rule {
+    name                       = "AllowInDevTeam"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_address_prefixes    = var.nsg_allow_list
+    source_port_range          = "*"
+    destination_port_ranges    = ["3389"]
+    destination_address_prefix = "*"
+  }
 
   tags = {
     Environment = var.environment_name

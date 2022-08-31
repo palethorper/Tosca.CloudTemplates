@@ -25,7 +25,7 @@ Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase
 }
 
 # Remove AllUsersAllHosts profile
-Remove-Item $profile.AllUsersAllHosts -Force -Verbose
+Remove-Item $profile.AllUsersAllHosts -Force -Verbose -ErrorAction SilentlyContinue
 
 # allow msi to write to temp folder
 # see https://github.com/actions/virtual-environments/issues/1704

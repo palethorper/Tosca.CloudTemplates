@@ -231,7 +231,7 @@ try {
     Write-Output "Creating Packer image."
     packer.exe build `
         -force `
-        -on-error=cleanup `
+        -on-error=abort `
         -only=azure-arm `
         -var "azure_client_id=$($ServicePrincipalId)" `
         -var "azure_client_secret=$($ServicePrincipalSecret)" `

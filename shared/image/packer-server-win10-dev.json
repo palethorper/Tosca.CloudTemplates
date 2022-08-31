@@ -21,7 +21,7 @@
         "azure_virtual_network_resource_group_name": "{{env `AZURE_VIRTUAL_NETWORK_RESOURCE_GROUP_NAME`}}",
         "azure_virtual_network_subnet_name": "{{env `AZURE_VIRTUAL_NETWORK_SUBNET_NAME`}}",
         "azure_private_virtual_network_with_public_ip": "{{env `AZURE_PRIVATE_VIRTUAL_NETWORK_WITH_PUBLIC_IP`}}",
-        "azure_vm_size": "Standard_D4ds_v4",
+        "azure_vm_size": "Standard_D4s_v5",
         "azure_gallery_name": "{{env `AZURE_GALLERY_NAME`}}",
         "azure_gallery_resource_group": "{{env `AZURE_GALLERY_RESOURCE_GROUP`}}",
         "azure_gallery_target_image_name": "{{env `AZURE_GALLERY_TARGET_IMAGE_NAME`}}",
@@ -88,25 +88,16 @@
             "inline": [
               "Enable-WindowsOptionalFeature -Online -FeatureName 'IIS-WebServerManagementTools' -All",
               "Enable-WindowsOptionalFeature -Online -FeatureName 'Containers' -All -NoRestart",
-              "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))",
-              "Start-Process -Wait -FilePath msiexec -ArgumentList /i, 'https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi', /qn"
+              "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))"
             ]
         },
         {
             "type": "windows-restart",
-            "restart_timeout": "10m"
+            "restart_timeout": "15m"
         },
         {
             "type": "file",
-            "sources": [
-                "{{ user `installers_dir` }}\\PostDeploy-Tosca.ps1", 
-                "{{ user `installers_dir` }}\\PostDeploy-ToscaDEX.ps1", 
-                "{{ user `installers_dir` }}\\PostDeploy-ToscaServerAzure.ps1", 
-                "{{ user `installers_dir` }}\\PostDeploy-ToscaServerAWS.ps1", 
-                "{{ user `installers_dir` }}\\PostDeploy-ToscaServerConfig.ps1", 
-                "{{ user `installers_dir` }}\\PostDeploy-ToscaServerSelfSigned.ps1",
-                "{{ user `installers_dir` }}\\Install-DevopsAgent.ps1",
-                "{{ user `installers_dir` }}\\Import-AwsRdsRootCert.ps1"],
+            "source": "{{ user `installers_dir` }}",
             "destination": "{{ user `tosca_postdeploy_path` }}\\"
         },
         {
@@ -125,11 +116,9 @@
                  "choco install -y postman",
                  "choco install -y sql-server-management-studio",
                  "choco install -y putty.install",
-                 "choco install -y sql-server-express",
-                 "choco install -y docker-compose",
-                 "choco install -y docker-desktop"
+                 "choco install -y docker-compose"
             ]
-          },
+        },
         {
             "type": "windows-restart",
             "restart_timeout": "10m"
@@ -175,6 +164,16 @@
             "scripts": [
                 "{{ user `installers_dir` }}\\Upgrade-ToscaServer.ps1"
             ]
+        },
+        {
+            "type": "powershell",
+            "scripts": [
+                "{{ user `installers_dir` }}\\PostDeploy-DevSoftwareInstall.ps1"
+            ]
+        },
+        {
+            "type": "windows-restart",
+            "restart_timeout": "10m"
         },
         {
             "type": "powershell",
